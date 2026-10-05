@@ -1,4 +1,9 @@
-// TODO: Заменить на настоящий корневой редьюсер
-export const rootReducer = (): Record<string, never> => ({
-  // TODO: Собрать здесь редьюсеры слайсов
+import { combineSlices } from '@reduxjs/toolkit';
+import { ingredientsSlice, userReducer, ordersSlice, constructorSlice } from '@slices';
+
+export const RootReducer = combineSlices({
+  ingredients: ingredientsSlice,
+  user: userReducer,
+  orders: ordersSlice,
+  constructorBurger: constructorSlice,
 });

@@ -1,16 +1,19 @@
 import { BurgerConstructorUI } from '@ui';
 import { useMemo } from 'react';
+import { clearOrder } from '@services/slices/order-slice';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '@/services/store';
 
 import type { TConstructorIngredient, TConstructorState, TOrder } from '@utils-types';
 
 export const BurgerConstructor = (): React.JSX.Element | null => {
   /** TODO: Взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems: TConstructorState = {
-    bun: null,
-    ingredients: [],
-  };
+  const constructorItems: TConstructorState = useSelector(
+    (select: RootState) => select.constructorBurger
+  );
   const orderRequest = false;
   const orderModalData: TOrder | null = null;
+  const dispatch = useDispatch();
 
   const onOrderClick = (): void => {
     if (!constructorItems.bun || orderRequest) return;
@@ -19,6 +22,8 @@ export const BurgerConstructor = (): React.JSX.Element | null => {
 
   const closeOrderModal = (): void => {
     // TODO: Закрыть модальное окно и сбросить заказ
+
+    dispatch(clearOrder());
   };
 
   const price = useMemo(

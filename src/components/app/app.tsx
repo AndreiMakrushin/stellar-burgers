@@ -1,3 +1,14 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
+import '../../index.css';
+import styles from './app.module.css';
+import {
+  fetchIngredients,
+  selectIngredients,
+  selectIsLoading,
+  selectError,
+} from '@/services/slices/ingredient-slice';
 import {
   AppHeader,
   Modal,
@@ -17,19 +28,19 @@ import {
   NotFound404,
 } from '@pages';
 import { Preloader } from '@ui';
-import { Routes, Route } from 'react-router-dom';
 
 import type { AppContentProps } from './type';
-import type { TIngredient } from '@utils-types';
-
-import '../../index.css';
-
-import styles from './app.module.css';
+import type { AppDispatch } from '@/services/store';
 
 const App = (): React.JSX.Element => {
-  const ingredients: TIngredient[] = [];
-  const isIngredientsLoading = false;
-  const ingredientsError = null;
+  const dispatch = useDispatch<AppDispatch>();
+  const ingredients = useSelector(selectIngredients);
+  const isIngredientsLoading = useSelector(selectIsLoading);
+  const ingredientsError = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
@@ -45,8 +56,6 @@ const App = (): React.JSX.Element => {
 
 export default App;
 
-/* Маршруты показываются только когда ингредиенты загружены: без них не
-   отрисовать ни конструктор, ни состав заказа. */
 const AppContent = ({
   ingredients,
   isLoading,
@@ -76,86 +85,84 @@ const AppContent = ({
 
 const RouteComponent = (): React.JSX.Element => {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<ConstructorPage />} />
-        <Route path="/feed" element={<Feed />} />
-        <Route
-          path="/login"
-          element={
-            <ProtectedRoute>
-              <Login />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <ProtectedRoute>
-              <Register />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/forgot-password"
-          element={
-            <ProtectedRoute>
-              <ForgotPassword />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/reset-password"
-          element={
-            <ProtectedRoute>
-              <ResetPassword />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile/orders"
-          element={
-            <ProtectedRoute>
-              <ProfileOrders />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<NotFound404 />} />
-        <Route
-          path="/feed/:number"
-          element={
+    <Routes>
+      <Route path="/" element={<ConstructorPage />} />
+      <Route path="/feed" element={<Feed />} />
+      <Route
+        path="/login"
+        element={
+          <ProtectedRoute>
+            <Login />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <ProtectedRoute>
+            <Register />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <ProtectedRoute>
+            <ForgotPassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/reset-password"
+        element={
+          <ProtectedRoute>
+            <ResetPassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile/orders"
+        element={
+          <ProtectedRoute>
+            <ProfileOrders />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<NotFound404 />} />
+      <Route
+        path="/feed/:number"
+        element={
+          <Modal title="Детали заказа" onClose={(): void => console.log('close')}>
+            <OrderInfo />
+          </Modal>
+        }
+      />
+      <Route
+        path="/ingredients/:id"
+        element={
+          <Modal title="Детали заказа" onClose={(): void => console.log('close')}>
+            <IngredientDetails />
+          </Modal>
+        }
+      />
+      <Route
+        path="/profile/orders/:number"
+        element={
+          <ProtectedRoute>
             <Modal title="Детали заказа" onClose={(): void => console.log('close')}>
               <OrderInfo />
             </Modal>
-          }
-        />
-        <Route
-          path="/ingredients/:id"
-          element={
-            <Modal title="Детали заказа" onClose={(): void => console.log('close')}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-        <Route
-          path="/profile/orders/:number"
-          element={
-            <ProtectedRoute>
-              <Modal title="Детали заказа" onClose={(): void => console.log('close')}>
-                <OrderInfo />
-              </Modal>
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 };
