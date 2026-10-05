@@ -39,14 +39,14 @@ const ingredientsSlice = createSlice({
         state.ingredientsError = new Error(action.error.message ?? 'Ошибка');
       });
   },
+  selectors: {
+    selectIngredients: (state) => state.ingredients,
+    selectIsLoading: (state) => state.isIngredientsLoading,
+    selectError: (state) => state.ingredientsError,
+  },
 });
 
-export const selectIngredients = (state: {
-  ingredients: IngredientsState;
-}): TIngredient[] => state.ingredients.ingredients;
-export const selectIsLoading = (state: { ingredients: IngredientsState }): boolean =>
-  state.ingredients.isIngredientsLoading;
-export const selectError = (state: { ingredients: IngredientsState }): Error | null =>
-  state.ingredients.ingredientsError;
+export const { selectIngredients, selectIsLoading, selectError } =
+  ingredientsSlice.selectors;
 
 export default ingredientsSlice.reducer;

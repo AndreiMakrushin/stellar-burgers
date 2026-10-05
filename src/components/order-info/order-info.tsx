@@ -2,14 +2,12 @@ import { selectIngredients } from '@/services/slices/ingredient-slice';
 import { Preloader, OrderInfoUI } from '@ui';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-
-import type { TIngredient } from '@utils-types';
-
 import type { RootState } from '@/services/store';
+import type { TIngredient } from '@utils-types';
 
 export const OrderInfo = (): React.JSX.Element => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = useSelector((state: RootState) => state.orders.order);
+  const orderData = useSelector((state: RootState) => state.order.order);
 
   const ingredients: TIngredient[] = useSelector(selectIngredients);
 

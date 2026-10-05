@@ -9,6 +9,7 @@ import {
   selectIsLoading,
   selectError,
 } from '@/services/slices/ingredient-slice';
+
 import {
   AppHeader,
   Modal,
@@ -39,7 +40,7 @@ const App = (): React.JSX.Element => {
   const ingredientsError = useSelector(selectError);
 
   useEffect(() => {
-    dispatch(fetchIngredients());
+    void dispatch(fetchIngredients());
   }, [dispatch]);
 
   return (

@@ -1,6 +1,5 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 
-import type { RootState } from '../store';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { TIngredient, TConstructorIngredient } from '@utils-types';
 
@@ -18,11 +17,8 @@ const constructorSlice = createSlice({
   name: 'constructor',
   initialState,
   reducers: {
-    addBun(state, action: PayloadAction<TConstructorIngredient>): void {
-      state.bun = action.payload;
-    },
     addIngredient: {
-      reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
+      reducer(state, action: PayloadAction<TConstructorIngredient>) {
         if (action.payload.type === 'bun') {
           state.bun = action.payload;
         } else {
@@ -30,25 +26,42 @@ const constructorSlice = createSlice({
         }
       },
       prepare(ingredient: TIngredient) {
-        const id = nanoid();
-        return { payload: { ...ingredient, id: id } };
+        return { payload: { ...ingredient, id: nanoid() } };
       },
     },
-    removeIngredient(state, action: PayloadAction<TConstructorIngredient>): void {
-      state.ingredients = state.ingredients.filter(
-        (ingredient) => ingredient.id !== action.payload.id
-      );
+    removeIngredient(state, action: PayloadAction<string>) {
+      state.ingredients = state.ingredients.filter((item) => item.id !== action.payload);
     },
+    clearConstructor(state) {
+      state.bun = null;
+      state.ingredients = [];
+    },
+    moveIngredient(
+      state,
+      action: PayloadAction<{ id: string; direction: 'up' | 'down' }>
+    ) {
+      const { id, direction } = action.payload;
+      const index = state.ingredients.findIndex((item) => item.id === id);
+      if (index === -1) return;
+
+      const targetIndex = direction === 'up' ? index - 1 : index + 1;
+      if (targetIndex < 0 || targetIndex >= state.ingredients.length) return;
+
+      [state.ingredients[index], state.ingredients[targetIndex]] = [
+        state.ingredients[targetIndex],
+        state.ingredients[index],
+      ];
+    },
+  },
+  selectors: {
+    selectBun: (state) => state.bun,
+    selectIngredients: (state) => state.ingredients,
   },
 });
 
-export const { addBun, addIngredient, removeIngredient } = constructorSlice.actions;
+export const { addIngredient, removeIngredient, clearConstructor, moveIngredient } =
+  constructorSlice.actions;
 
-export const selectConstructor = (
-  state: RootState
-): {
-  bun: TConstructorIngredient | null;
-  ingredients: TConstructorIngredient[];
-} => state.constructorBurger;
+export const { selectBun, selectIngredients } = constructorSlice.selectors;
 
 export default constructorSlice.reducer;
