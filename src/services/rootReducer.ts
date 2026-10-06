@@ -11,5 +11,5 @@ export const RootReducer = combineSlices({
   user: userReducer,
   order: orderSlice,
   constructorBurger: constructorSlice,
-  feeds: feedSlice,
+  feed: feedSlice,
 });

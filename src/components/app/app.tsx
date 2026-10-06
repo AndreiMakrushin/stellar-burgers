@@ -29,9 +29,10 @@ import {
   NotFound404,
 } from '@pages';
 import { Preloader } from '@ui';
-
+import { authChecked, getUser } from '@/services/slices/user-slice';
 import type { AppContentProps } from './type';
 import type { AppDispatch } from '@/services/store';
+import { getCookie } from '@utils/cookie';
 
 const App = (): React.JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,6 +41,12 @@ const App = (): React.JSX.Element => {
   const ingredientsError = useSelector(selectError);
 
   useEffect(() => {
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      void dispatch(getUser());
+    } else {
+      dispatch(authChecked());
+    }
     void dispatch(fetchIngredients());
   }, [dispatch]);
 
@@ -93,7 +100,7 @@ const RouteComponent = (): React.JSX.Element => {
       <Route
         path="/login"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute onlyUnAuth>
             <Login />
           </ProtectedRoute>
         }
@@ -101,7 +108,7 @@ const RouteComponent = (): React.JSX.Element => {
       <Route
         path="/register"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute onlyUnAuth>
             <Register />
           </ProtectedRoute>
         }
@@ -109,7 +116,7 @@ const RouteComponent = (): React.JSX.Element => {
       <Route
         path="/forgot-password"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute onlyUnAuth>
             <ForgotPassword />
           </ProtectedRoute>
         }
@@ -117,7 +124,7 @@ const RouteComponent = (): React.JSX.Element => {
       <Route
         path="/reset-password"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute onlyUnAuth>
             <ResetPassword />
           </ProtectedRoute>
         }
