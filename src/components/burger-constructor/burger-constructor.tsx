@@ -4,28 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
   clearOrder,
-  createOrder,
   selectOrderRequest,
   selectOrder,
+  createOrder,
 } from '@services/slices/order-slice';
-import {
-  selectIngredients,
-  selectBun,
-  clearConstructor,
-} from '@services/slices/constructor-slice';
+import { selectConstructor, clearConstructor } from '@services/slices/constructor-slice';
 import { useDispatch } from '@/services/store';
 import { selectUser } from '@services/slices/user-slice';
 
 import type { TConstructorIngredient, TConstructorState, TOrder } from '@utils-types';
 
 export const BurgerConstructor = (): React.JSX.Element | null => {
-  /** TODO: Взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const ingredients = useSelector(selectIngredients);
-  const bun = useSelector(selectBun);
-  const constructorItems: TConstructorState = {
-    bun,
-    ingredients,
-  };
+  const constructorItems: TConstructorState = useSelector(selectConstructor);
   const orderRequest = useSelector(selectOrderRequest);
   const orderModalData: TOrder | null = useSelector(selectOrder);
   const dispatch = useDispatch();
@@ -39,9 +29,9 @@ export const BurgerConstructor = (): React.JSX.Element | null => {
     }
 
     const ids = [
-      bun?._id,
+      constructorItems.bun._id,
       ...constructorItems.ingredients.map((item) => item._id),
-      bun?._id,
+      constructorItems.bun._id,
     ] as string[];
 
     dispatch(createOrder(ids))

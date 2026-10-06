@@ -1,4 +1,4 @@
-import { selectIngredients, selectBun } from '@services/slices/constructor-slice';
+import { selectConstructor } from '@services/slices/constructor-slice';
 import { IngredientsCategoryUI } from '@ui';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,13 +12,7 @@ export const IngredientsCategory = ({
   ingredients,
   ref,
 }: TIngredientsCategoryProps): React.JSX.Element => {
-  const bun = useSelector(selectBun);
-  const ingredientsItems = useSelector(selectIngredients);
-  // TODO: Взять переменную из стора
-  const burgerConstructor = {
-    bun,
-    ingredients: ingredientsItems,
-  };
+  const burgerConstructor = useSelector(selectConstructor);
 
   const ingredientsCounters = useMemo(() => {
     const { bun, ingredients } = burgerConstructor;
