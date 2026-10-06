@@ -8,7 +8,10 @@ import {
   selectOrder,
   createOrder,
 } from '@services/slices/order-slice';
-import { selectConstructor, clearConstructor } from '@services/slices/constructor-slice';
+import {
+  selectConstructor,
+  removeIngredientAll,
+} from '@services/slices/constructor-slice';
 import { useDispatch } from '@/services/store';
 import { selectUser } from '@services/slices/user-slice';
 
@@ -37,7 +40,7 @@ export const BurgerConstructor = (): React.JSX.Element | null => {
     dispatch(createOrder(ids))
       .unwrap()
       .then(() => {
-        dispatch(clearConstructor());
+        dispatch(removeIngredientAll());
       })
       .catch((error) => {
         console.log(error);

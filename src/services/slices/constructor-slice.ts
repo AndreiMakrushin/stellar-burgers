@@ -33,7 +33,7 @@ const constructorSlice = createSlice({
     removeIngredient(state, action: PayloadAction<string>) {
       state.ingredients = state.ingredients.filter((item) => item.id !== action.payload);
     },
-    clearConstructor(state) {
+    removeIngredientAll(state) {
       state.bun = null;
       state.ingredients = [];
     },
@@ -56,7 +56,7 @@ const constructorSlice = createSlice({
   },
 });
 
-export const { addIngredient, removeIngredient, clearConstructor, moveIngredient } =
+export const { addIngredient, removeIngredient, removeIngredientAll, moveIngredient } =
   constructorSlice.actions;
 
 export const selectConstructor = (state: RootState): ConstructorState =>
