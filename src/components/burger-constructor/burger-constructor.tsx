@@ -1,7 +1,6 @@
 import { BurgerConstructorUI } from '@ui';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import {
   clearOrder,
   selectOrderRequest,
@@ -12,7 +11,7 @@ import {
   selectConstructor,
   removeIngredientAll,
 } from '@services/slices/constructor-slice';
-import { useDispatch } from '@/services/store';
+import { useDispatch, useSelector } from '@/services/store';
 import { selectUser } from '@services/slices/user-slice';
 
 import type { TConstructorIngredient, TConstructorState, TOrder } from '@utils-types';

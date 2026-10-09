@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '@/services/store';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import '../../index.css';
 import styles from './app.module.css';

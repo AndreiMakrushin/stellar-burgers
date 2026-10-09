@@ -1,5 +1,5 @@
 import { Preloader, IngredientDetailsUI } from '@ui';
-import { useSelector } from 'react-redux';
+import { useSelector } from '@/services/store';
 import { useParams } from 'react-router-dom';
 
 import type { RootState } from '@/services/store';

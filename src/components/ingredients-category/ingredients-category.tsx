@@ -1,7 +1,7 @@
 import { selectConstructor } from '@services/slices/constructor-slice';
 import { IngredientsCategoryUI } from '@ui';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '@/services/store';
 
 import type { TIngredientsCategoryProps } from './type';
 import type { TIngredient } from '@utils-types';

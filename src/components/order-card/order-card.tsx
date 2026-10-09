@@ -1,7 +1,7 @@
 import { selectIngredients } from '@/services/slices/ingredient-slice';
 import { OrderCardUI } from '@ui';
 import { memo, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '@/services/store';
 import { useLocation } from 'react-router-dom';
 
 import type { OrderCardProps } from './type';

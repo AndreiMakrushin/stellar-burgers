@@ -6,6 +6,8 @@ import {
   getUserApi,
   updateUserApi,
   logoutApi,
+  forgotPasswordApi,
+  resetPasswordApi,
   type TRegisterData,
   type TLoginData,
 } from '@utils/burger-api';
@@ -49,11 +51,29 @@ export const logoutUser = createAsyncThunk('user/logout', async () => {
   localStorage.removeItem('refreshToken');
 });
 
+export const forgotPasswordUser = createAsyncThunk(
+  'user/forgotPassword',
+  async (data: { email: string }) => {
+    const response = await forgotPasswordApi(data);
+    return response;
+  }
+);
+
+export const resetPasswordUser = createAsyncThunk(
+  'user/resetPassword',
+  async (data: { password: string; token: string }) => {
+    const response = await resetPasswordApi(data);
+    return response;
+  }
+);
+
 type UserState = {
   user: TUser | null;
   isAuthChecked: boolean;
   isAuthenticated: boolean;
   isSuccessRegistration: boolean;
+  isSuccessForgotPassword: boolean;
+  isSuccessResetPassword: boolean;
   isLoading: boolean;
   error: Error | null;
 };
@@ -63,6 +83,8 @@ const initialState: UserState = {
   isAuthChecked: false,
   isAuthenticated: false,
   isSuccessRegistration: false,
+  isSuccessForgotPassword: false,
+  isSuccessResetPassword: false,
   isLoading: false,
   error: null,
 };
@@ -171,6 +193,36 @@ const userSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = new Error(action.error.message ?? 'Ошибка выхода');
+      })
+
+      .addCase(forgotPasswordUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.isSuccessForgotPassword = false;
+      })
+      .addCase(forgotPasswordUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccessForgotPassword = true;
+      })
+      .addCase(forgotPasswordUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = new Error(action.error.message ?? 'Ошибка');
+        state.isSuccessForgotPassword = false;
+      })
+
+      .addCase(resetPasswordUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.isSuccessResetPassword = false;
+      })
+      .addCase(resetPasswordUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccessResetPassword = true;
+      })
+      .addCase(resetPasswordUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = new Error(action.error.message ?? 'Ошибка');
+        state.isSuccessResetPassword = false;
       });
   },
 });
@@ -196,5 +248,11 @@ export const selectUserError = (state: { user: UserState }): Error | null =>
 
 export const selectUserName = (state: { user: UserState }): string | undefined =>
   state.user.user?.name;
+
+export const selectIsSuccessForgotPassword = (state: { user: UserState }): boolean =>
+  state.user.isSuccessForgotPassword;
+
+export const selectIsSuccessResetPassword = (state: { user: UserState }): boolean =>
+  state.user.isSuccessResetPassword;
 
 export default userSlice.reducer;

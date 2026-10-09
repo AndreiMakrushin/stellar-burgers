@@ -1,6 +1,6 @@
 import { LoginUI } from '@ui-pages';
 import { type SyntheticEvent, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '@/services/store';
 import { useNavigate } from 'react-router-dom';
 
 import {
