@@ -1,4 +1,4 @@
-import type { Decorator } from '@storybook/react';
+import type { Decorator } from '@storybook/react-vite';
 
 /**
  * Some components are only ever rendered inside a Modal in the app. Showing
