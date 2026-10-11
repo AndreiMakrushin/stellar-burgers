@@ -6,6 +6,8 @@ import {
   resetPasswordUser,
   selectIsSuccessResetPassword,
   selectUserError,
+  clearError,
+  clearResetPasswordSuccess,
 } from '@services/slices/user-slice';
 
 export const ResetPassword = (): React.JSX.Element => {
@@ -22,6 +24,10 @@ export const ResetPassword = (): React.JSX.Element => {
   };
 
   useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (!localStorage.getItem('resetPassword')) {
       void navigate('/forgot-password', { replace: true });
     }
@@ -31,8 +37,9 @@ export const ResetPassword = (): React.JSX.Element => {
     if (isSuccess) {
       localStorage.removeItem('resetPassword');
       void navigate('/login', { replace: true });
+      dispatch(clearResetPasswordSuccess());
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, navigate, dispatch]);
 
   return (
     <ResetPasswordUI

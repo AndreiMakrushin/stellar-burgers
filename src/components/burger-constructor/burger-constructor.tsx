@@ -34,7 +34,7 @@ export const BurgerConstructor = (): React.JSX.Element | null => {
       constructorItems.bun._id,
       ...constructorItems.ingredients.map((item) => item._id),
       constructorItems.bun._id,
-    ] as string[];
+    ];
 
     dispatch(createOrder(ids))
       .unwrap()

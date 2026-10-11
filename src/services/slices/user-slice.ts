@@ -99,6 +99,12 @@ const userSlice = createSlice({
     clearError(state) {
       state.error = null;
     },
+    clearResetPasswordSuccess(state) {
+      state.isSuccessResetPassword = false;
+    },
+    clearForgotPasswordSuccess(state) {
+      state.isSuccessForgotPassword = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -227,7 +233,12 @@ const userSlice = createSlice({
   },
 });
 
-export const { authChecked, clearError } = userSlice.actions;
+export const {
+  authChecked,
+  clearError,
+  clearResetPasswordSuccess,
+  clearForgotPasswordSuccess,
+} = userSlice.actions;
 
 export const selectUser = (state: { user: UserState }): TUser | null => state.user.user;
 

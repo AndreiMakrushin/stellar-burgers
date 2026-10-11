@@ -23,7 +23,7 @@ export const Feed = (): React.JSX.Element => {
     handleGetFeeds();
   }, [dispatch]);
 
-  if (isLoading || !orders.length) {
+  if (isLoading) {
     return <Preloader />;
   }
 

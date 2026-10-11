@@ -1,13 +1,8 @@
 import { LoginUI } from '@ui-pages';
 import { type SyntheticEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from '@/services/store';
-import { useNavigate } from 'react-router-dom';
 
-import {
-  loginUser,
-  selectUserError,
-  selectIsAuthenticated,
-} from '@services/slices/user-slice';
+import { loginUser, selectUserError, clearError } from '@services/slices/user-slice';
 import type { AppDispatch } from '@/services/store';
 
 export const Login = (): React.JSX.Element => {
@@ -15,15 +10,11 @@ export const Login = (): React.JSX.Element => {
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   const error = useSelector(selectUserError);
-  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      void navigate('/', { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
+    dispatch(clearError());
+  }, [dispatch]);
 
   const handleSubmit = (e: SyntheticEvent): void => {
     e.preventDefault();

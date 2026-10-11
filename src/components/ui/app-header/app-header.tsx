@@ -8,7 +8,7 @@ import {
 import type { TAppHeaderUIProps } from './type';
 
 import styles from './app-header.module.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 export const AppHeaderUI = ({ userName }: TAppHeaderUIProps): React.JSX.Element => (
   <header className={styles.header}>
@@ -43,13 +43,13 @@ export const AppHeaderUI = ({ userName }: TAppHeaderUIProps): React.JSX.Element 
         </NavLink>
       </div>
       <div className={styles.logo}>
-        <NavLink to={'/'}>
+        <Link to={'/'}>
           <Logo />
-        </NavLink>
+        </Link>
       </div>
 
       <NavLink
-        to={userName ? '/profile' : '/login'}
+        to={'/profile'}
         className={({ isActive }) =>
           `${styles.link_position_last} ${styles.link} ${isActive ? styles.link_active : ''}`
         }

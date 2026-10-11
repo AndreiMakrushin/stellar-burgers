@@ -6,6 +6,8 @@ import {
   forgotPasswordUser,
   selectIsSuccessForgotPassword,
   selectUserError,
+  clearError,
+  clearForgotPasswordSuccess,
 } from '@services/slices/user-slice';
 
 export const ForgotPassword = (): React.JSX.Element => {
@@ -19,13 +21,17 @@ export const ForgotPassword = (): React.JSX.Element => {
     e.preventDefault();
     void dispatch(forgotPasswordUser({ email }));
   };
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
 
   useEffect(() => {
     if (isSuccess) {
       localStorage.setItem('resetPassword', 'true');
       void navigate('/reset-password', { replace: true });
+      dispatch(clearForgotPasswordSuccess());
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, navigate, dispatch]);
 
   return (
     <ForgotPasswordUI
