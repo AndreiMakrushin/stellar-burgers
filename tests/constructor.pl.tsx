@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('add ingredients to constructor works correctly', function () {
   test('Добавление ингридиента', async ({ page }) => {
-    await page.routeFromHAR('mocks/ingredients.har', {
+    await page.routeFromHAR('tests/hars/ingredients.har', {
       url: '**/api/ingredients',
       update: false,
     });
@@ -18,7 +18,7 @@ test.describe('add ingredients to constructor works correctly', function () {
   });
 
   test('Работа модального окна ингридиента', async ({ page }) => {
-    await page.routeFromHAR('mocks/ingredients.har', {
+    await page.routeFromHAR('tests/hars/ingredients.har', {
       url: '**/api/ingredients',
       update: false,
     });
@@ -29,13 +29,15 @@ test.describe('add ingredients to constructor works correctly', function () {
     const modal = page.getByText('Детали ингредиента');
     await expect(modal).toBeVisible();
 
+    await expect(page.getByText('Краторная булка N-200i').last()).toBeVisible();
+
     await page.getByLabel('Закрыть').click();
 
     await expect(modal).toBeHidden();
   });
 
   test('Создание заказа', async ({ page }) => {
-    await page.routeFromHAR('mocks/ingredients.har', {
+    await page.routeFromHAR('tests/hars/ingredients.har', {
       url: '**/api/ingredients',
       update: false,
     });
@@ -86,7 +88,7 @@ test.describe('add ingredients to constructor works correctly', function () {
     await expect(page.getByText('Выберите булки').first()).toBeVisible();
   });
   test('Закрытие по оверлею', async ({ page }) => {
-    await page.routeFromHAR('mocks/ingredients.har', {
+    await page.routeFromHAR('tests/hars/ingredients.har', {
       url: '**/api/ingredients',
       update: false,
     });
