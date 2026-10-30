@@ -3,7 +3,7 @@ import { fn } from 'storybook/test';
 
 import ingredientImage from './assets/ingredient-placeholder.svg';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Example/BurgerIngredient',

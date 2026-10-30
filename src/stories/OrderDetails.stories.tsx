@@ -2,7 +2,7 @@ import { OrderDetailsUI } from '@ui';
 
 import { withModalSurface } from './modal-surface-decorator';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Example/OrderDetails',

@@ -1,7 +1,7 @@
 import { BurgerConstructorUI } from '@ui';
 import { fn } from 'storybook/test';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Example/BurgerConstructor',
