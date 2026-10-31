@@ -29,7 +29,9 @@ test.describe('add ingredients to constructor works correctly', function () {
     const modal = page.getByText('Детали ингредиента');
     await expect(modal).toBeVisible();
 
-    await expect(page.getByText('Краторная булка N-200i').last()).toBeVisible();
+    await expect(
+      page.locator('#modals').getByText('Краторная булка N-200i', { exact: true })
+    ).toBeVisible();
 
     await page.getByLabel('Закрыть').click();
 
@@ -41,22 +43,15 @@ test.describe('add ingredients to constructor works correctly', function () {
       url: '**/api/ingredients',
       update: false,
     });
-    await page.route('**/api/auth/user', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          user: { email: 'test@test.ru', name: 'Test' },
-        }),
-      });
+
+    await page.routeFromHAR('tests/hars/user.har', {
+      url: '**/api/auth/user',
+      update: false,
     });
-    await page.route('**/api/orders', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ success: true, order: { number: 12345 } }),
-      });
+
+    await page.routeFromHAR('tests/hars/orders.har', {
+      url: '**/api/orders',
+      update: false,
     });
 
     await page.addInitScript(() => {
